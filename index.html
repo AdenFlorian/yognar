@@ -1,23 +1,18 @@
 <html>
 
 <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script> -->
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 
 <body>
-    hello world
+    <h1>hello world</h1>
     <script>
-        foo();
+        const socket = io();
 
-        function foo(params) {
-            setTimeout(() => {
-                axios.get('http://localhost:3000/state')
-                    .then(({ data }) => {
-                        document.body.style.backgroundColor = data.state ? "red" : "blue"
-                        foo();
-                    })
-            }, 50);
-        }
+        socket.on('newState', function (newState) {
+            document.body.style.backgroundColor = newState ? "red" : "blue"
+        });
     </script>
 </body>
 

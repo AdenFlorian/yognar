@@ -1,7 +1,9 @@
 const express = require('express')
-const app = express()
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 const co = require('co')
+const app = express()
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
 
 app.use(bodyParser.json())
 
@@ -13,16 +15,24 @@ app.use(function (req, res, next) {
 
 let state = false;
 
-app.get('/', (req, res) => res.sendFile('index.html', { root: __dirname }))
-app.get('/state', (req, res) => res.json({ state: state }))
+app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'))
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+// app.get('/state', (req, res) => res.json({ state: state }))
 
+io.on('connection', function (socket) {
+    console.log('a user connected');
+    socket.on('disconnect', function () {
+        console.log('user disconnected');
+    });
+});
+
+http.listen(3000, () => console.log('yognar listening on port 3000!'))
 
 co(function* () {
     while (true) {
         yield waitSeconds(1);
         flipState()
+        io.emit('newState', state);
     }
 })
 
