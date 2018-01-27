@@ -1,0 +1,25 @@
+<html>
+
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script>
+</head>
+
+<body>
+    hello world
+    <script>
+        foo();
+
+        function foo(params) {
+            setTimeout(() => {
+                axios.get('http://localhost:3000/state')
+                    .then(({ data }) => {
+                        console.log(data.state)
+                        document.body.style.backgroundColor = data.state ? "red" : "blue"
+                        foo();
+                    })
+            }, 100);
+        }
+    </script>
+</body>
+
+</html>
