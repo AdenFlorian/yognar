@@ -26,7 +26,7 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(3000, () => console.log('yognar listening on port 3000!'))
+http.listen(80, () => console.log('yognar listening on port 80!'))
 
 co(function* () {
     while (true) {
