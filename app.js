@@ -13,6 +13,7 @@ app.use(function (req, res, next) {
 
 let state = false;
 
+app.get('/', (req, res) => res.sendFile('index.html', { root: __dirname }))
 app.get('/state', (req, res) => res.json({ state: state }))
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'))
