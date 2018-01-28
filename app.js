@@ -13,26 +13,26 @@ app.use(function (req, res, next) {
     next();
 });
 
-let state = false;
+let state = 0;
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'))
-
-// app.get('/state', (req, res) => res.json({ state: state }))
+app.get('/state', (req, res) => res.sendFile())
 
 io.on('connection', function (socket) {
     console.log('a user connected');
     socket.on('disconnect', function () {
         console.log('user disconnected');
     });
+    socket.emit('state', state)
 });
 
 http.listen(80, () => console.log('yognar listening on port 80!'))
 
 co(function* () {
     while (true) {
-        yield waitSeconds(1);
-        flipState()
-        io.emit('newState', state);
+        yield waitSeconds(.5);
+        io.emit('doStep');
+        doStep()
     }
 })
 
@@ -40,6 +40,10 @@ function waitSeconds(secondsToWait) {
     return new Promise(resolve => setTimeout(resolve, secondsToWait * 1000))
 }
 
-function flipState() {
-    state = !state
+function doStep() {
+    if (state < 2) {
+        state++
+    } else {
+        state = 0
+    }
 }

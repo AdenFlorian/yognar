@@ -6,13 +6,86 @@
 </head>
 
 <body>
-    <h1>hello world</h1>
+    <h1 id="text">hello world</h1>
     <script>
+        const text = document.getElementById('text')
+
         const socket = io();
 
-        socket.on('newState', function (newState) {
-            document.body.style.backgroundColor = newState ? "red" : "blue"
+        setText('connecting')
+
+        const green = 'rgb(162, 221, 119)';
+        const orange = 'rgb(221, 177, 119)';
+        const blue = 'rgb(119, 172, 221)';
+
+        let state = 0;
+
+        const possibleStates = [orange, green, blue]
+
+        socket.on('connect', () => {
+            setText('connected')
         });
+
+        socket.on('disconnect', (reason) => {
+            setText('disconnected: ' + reason)
+        });
+
+        socket.on('reconnect_attempt', (attemptNumber) => {
+            setText('reconnect_attempt: ' + attemptNumber)
+        });
+
+        socket.on('reconnecting', (attemptNumber) => {
+            setText('reconnecting: ' + attemptNumber)
+        });
+
+        socket.on('reconnect_error', (error) => {
+            setText('reconnect_error: ' + JSON.stringify(error, 2))
+        });
+
+        socket.on('reconnect_failed', () => {
+            setText('reconnect_failed')
+        });
+
+        socket.on('ping', () => {
+            setText('ping')
+        });
+
+        socket.on('pong', (latency) => {
+            setText('pong - latency: ' + latency)
+        });
+
+        socket.on('reconnect', (attemptNumber) => {
+            setText('reconnected: ' + attemptNumber)
+        });
+
+        socket.on('connect_timeout', (timeout) => {
+            setText('connect_timeout: ' + timeout)
+        });
+
+        socket.on('error', (error) => {
+            setText('error: ' + JSON.stringify(error, 2))
+        });
+
+        socket.on('connect_error', (error) => {
+            setText('connection error: ' + JSON.stringify(error, 2))
+        });
+
+        socket.on('state', (serverState) => (state = serverState));
+
+        socket.on('doStep', doStep);
+
+        function doStep() {
+            if (state < 2) {
+                state++
+            } else {
+                state = 0
+            }
+            document.body.style.backgroundColor = possibleStates[state]
+        }
+
+        function setText(newText) {
+            text.textContent = newText
+        }
     </script>
 </body>
 
