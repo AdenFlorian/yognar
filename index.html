@@ -1,7 +1,6 @@
 <html>
 
 <head>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.17.1/axios.min.js"></script> -->
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
@@ -22,57 +21,12 @@
 
         const possibleStates = [orange, green, blue]
 
-        socket.on('connect', () => {
-            setText('connected')
-        });
-
-        socket.on('disconnect', (reason) => {
-            setText('disconnected: ' + reason)
-        });
-
-        socket.on('reconnect_attempt', (attemptNumber) => {
-            setText('reconnect_attempt: ' + attemptNumber)
-        });
-
-        socket.on('reconnecting', (attemptNumber) => {
-            setText('reconnecting: ' + attemptNumber)
-        });
-
-        socket.on('reconnect_error', (error) => {
-            setText('reconnect_error: ' + JSON.stringify(error, 2))
-        });
-
-        socket.on('reconnect_failed', () => {
-            setText('reconnect_failed')
-        });
-
-        socket.on('ping', () => {
-            setText('ping')
-        });
-
-        socket.on('pong', (latency) => {
-            setText('pong - latency: ' + latency)
-        });
-
-        socket.on('reconnect', (attemptNumber) => {
-            setText('reconnected: ' + attemptNumber)
-        });
-
-        socket.on('connect_timeout', (timeout) => {
-            setText('connect_timeout: ' + timeout)
-        });
-
-        socket.on('error', (error) => {
-            setText('error: ' + JSON.stringify(error, 2))
-        });
-
-        socket.on('connect_error', (error) => {
-            setText('connection error: ' + JSON.stringify(error, 2))
-        });
-
-        socket.on('state', (serverState) => (state = serverState));
+        //socket.on('state', (serverState) => (state = serverState));
 
         socket.on('doStep', doStep);
+
+
+        setInterval(doStep, 400)
 
         function doStep() {
             if (state < 2) {
@@ -85,6 +39,68 @@
 
         function setText(newText) {
             text.textContent = newText
+        }
+
+        {
+            socket.on('connect', () => {
+                setText('connected')
+                console.log('connected')
+            });
+
+            socket.on('disconnect', (reason) => {
+                setText('disconnected: ' + reason)
+                console.log('disconnected: ' + reason)
+            });
+
+            socket.on('reconnect_attempt', (attemptNumber) => {
+                setText('reconnect_attempt: ' + attemptNumber)
+                console.log('reconnect_attempt: ' + attemptNumber)
+            });
+
+            socket.on('reconnecting', (attemptNumber) => {
+                setText('reconnecting: ' + attemptNumber)
+                console.log('reconnecting: ' + attemptNumber)
+            });
+
+            socket.on('reconnect_error', (error) => {
+                setText('reconnect_error: ' + JSON.stringify(error, 2))
+                console.log('reconnect_error: ' + JSON.stringify(error, 2))
+            });
+
+            socket.on('reconnect_failed', () => {
+                setText('reconnect_failed')
+                console.log('reconnect_failed')
+            });
+
+            socket.on('ping', () => {
+                setText('ping')
+                console.log('ping')
+            });
+
+            socket.on('pong', (latency) => {
+                setText('pong - latency: ' + latency)
+                console.log('pong - latency: ' + latency)
+            });
+
+            socket.on('reconnect', (attemptNumber) => {
+                setText('reconnected: ' + attemptNumber)
+                console.log('reconnected: ' + attemptNumber)
+            });
+
+            socket.on('connect_timeout', (timeout) => {
+                setText('connect_timeout: ' + timeout)
+                console.log('connect_timeout: ' + timeout)
+            });
+
+            socket.on('error', (error) => {
+                setText('error: ' + JSON.stringify(error, 2))
+                console.log('error: ' + JSON.stringify(error, 2))
+            });
+
+            socket.on('connect_error', (error) => {
+                setText('connection error: ' + JSON.stringify(error, 2))
+                console.log('connection error: ' + JSON.stringify(error, 2))
+            });
         }
     </script>
 </body>
