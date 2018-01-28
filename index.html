@@ -13,28 +13,44 @@
 
         setText('connecting')
 
-        const green = 'rgb(162, 221, 119)';
-        const orange = 'rgb(221, 177, 119)';
-        const blue = 'rgb(119, 172, 221)';
-
         let state = 0;
 
-        const possibleStates = [orange, green, blue]
+        const possibleStates = [
+            'red',
+            'prange',
+            'yellow',
+            'green',
+            'blue',
+            'purple',
+            'magenta',
+            'pink',
+            'white',
+            'black'
+        ]
 
-        //socket.on('state', (serverState) => (state = serverState));
+        socket.on('state', (serverState) => (state = serverState));
 
-        socket.on('doStep', doStep);
+        //socket.on('doStep', doStep);
 
 
-        setInterval(doStep, 400)
+        setInterval(doStep, 100)
 
         function doStep() {
-            if (state < 2) {
+            if (state < 100) {
                 state++
             } else {
                 state = 0
             }
-            document.body.style.backgroundColor = possibleStates[state]
+            //document.body.style.backgroundColor = possibleStates[state]
+            setText(n(state, '|') + state)
+        }
+
+        function n(n, string) {
+            let x = ''
+            for (let i = 0; i < n; i++) {
+                x += string
+            }
+            return x
         }
 
         function setText(newText) {

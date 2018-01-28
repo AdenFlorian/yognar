@@ -23,18 +23,22 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-    socket.emit('state', state)
+    sendState(socket);
+    setInterval(() => sendState(socket), 1000)
 });
 
 http.listen(80, () => console.log('yognar listening on port 80!'))
 
-setInterval(doStep, 400)
+setInterval(doStep, 100)
 
 function doStep() {
-    //io.emit('doStep');
-    if (state < 2) {
+    if (state < 100) {
         state++
     } else {
         state = 0
     }
+}
+
+function sendState(socket) {
+    socket.emit('state', state)
 }
