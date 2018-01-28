@@ -37,6 +37,7 @@ vanilla js/html
 [x] server sends state to all clients every step
 [x] server tells client when to do step
 [x] client does steps on its own
+[ ] clients can do things
 
 # things to account for
 - new clients after game has started
@@ -66,3 +67,27 @@ just the nature of timers
 so to mitigate the desync, the server could periodaiclly send its state to all clients
 this definitely mitigates the problem, probably fixes it
 clients can still drift between sync-ups, but a big deal at the moment
+
+# how to tell when clients are desynced
+compare state?
+hash state?
+
+# how to get clients back in sync without sending all state
+have clients periodically hash their state, and send hash to server
+if server gets a bad hash, then it:
+- pauses all clients
+- replays all actions since last correct hash
+- verifies client's new hash is good
+- resumes all clients
+
+# player clicks button to do something
+- player clicks
+- client tells server that a player wants to do a thing
+- server decides when the thing will happen
+- server tells clients when and what will happen
+- then when the clients and server get to that step they do the thing
+
+# game ideas
+- snake
+    - one snake game
+    - multiple people on different clients controlling the snake
