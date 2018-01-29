@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-const doStep = require('./public/doStep.js').doStep
+const common = require('./public/doStep.js')
 
 app.use(bodyParser.json())
 
@@ -13,11 +13,16 @@ app.use((req, res, next) => {
     next()
 })
 
+const gridSize = 100
+
 let state = {
-    x: 5,
-    y: 5,
-    direction: 'right'
+    x: gridSize / 2,
+    y: gridSize / 2,
+    direction: 'right',
+    gridSize
 }
+
+const stepIntervalms = 100
 
 app.use(express.static('public'))
 
@@ -32,26 +37,16 @@ io.on('connection', (socket) => {
         console.log('click')
         socket.emit('doClickInSeconds', .5)
         setTimeout(() => {
-            switch (state.direction) {
-                case 'left': state.direction = 'up'
-                    break
-                case 'right': state.direction = 'down'
-                    break
-                case 'up': state.direction = 'right'
-                    break
-                case 'down': state.direction = 'left'
-                    break
-                default: throw 'bad direction'
-            }
+            state = common.changeDirection(state)
         }, 500)
     })
     sendState(socket)
-    setInterval(() => sendState(socket), 1000)
+    setInterval(() => sendState(socket), stepIntervalms)
 })
 
 http.listen(80, () => console.log('yognar listening on port 80!'))
 
-setInterval(() => (state = doStep(state)), 1000)
+setInterval(() => (state = common.doStep(state)), stepIntervalms)
 
 function sendState(socket) {
     socket.emit('state', state)

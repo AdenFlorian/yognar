@@ -9,15 +9,16 @@ canvas.height = height
 const canvasContext = canvas.getContext('2d')
 
 let state = 0
+const stepIntervalms = 100
 
 setInfo('connecting')
 
 socket.on('state', (serverState) => (state = serverState))
 
-setInterval(doStep2, 1000)
+setInterval(doStep2, stepIntervalms)
 
 function doStep2() {
-    state = doStep(state)
+    state = common.doStep(state)
     updateCanvas(state)
 }
 
@@ -29,8 +30,8 @@ document.onclick = function () {
 socket.on('doClickInSeconds', (seconds) => {
     console.log('received doClickInSeconds')
     setTimeout(() => {
-        state = 0
-        console.log('reset state to 0')
+        state = common.changeDirection(state)
+        console.log('did click')
     }, seconds * 1000)
 })
 
@@ -102,5 +103,6 @@ function setInfo(newInfo) {
 
 function updateCanvas(state) {
     canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-    canvasContext.fillRect(state.x * (width / 10), state.y * (height / 10), (width / 10), (height / 10))
+    canvasContext.fillStyle = 'lime'
+    canvasContext.fillRect(state.x * (width / state.gridSize), state.y * (height / state.gridSize), (width / state.gridSize), (height / state.gridSize))
 }
