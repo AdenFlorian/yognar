@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io()
 
 const info = document.getElementById('info')
 const canvas = document.getElementById('canvas')
@@ -6,24 +6,11 @@ const width = 400
 const height = 400
 canvas.width = width
 canvas.height = height
-const canvasContext = canvas.getContext("2d")
+const canvasContext = canvas.getContext('2d')
 
 let state = 0
 
 setInfo('connecting')
-
-const possibleStates = [
-    'red',
-    'prange',
-    'yellow',
-    'green',
-    'blue',
-    'purple',
-    'magenta',
-    'pink',
-    'white',
-    'black'
-]
 
 socket.on('state', (serverState) => (state = serverState))
 
@@ -32,31 +19,19 @@ setInterval(doStep2, 1000)
 function doStep2() {
     state = doStep(state)
     updateCanvas(state)
-    //setInfo(n(state, '|') + state)
 }
 
-function n(n, string) {
-    let x = ''
-    for (let i = 0; i < n; i++) {
-        x += string
-    }
-    return x
-}
-
-document.onclick = function (event) {
-    if (event === undefined) event = window.event;
-    var target = 'target' in event ? event.target : event.srcElement;
-
+document.onclick = function () {
     socket.emit('click')
     console.log('click')
-};
+}
 
 socket.on('doClickInSeconds', (seconds) => {
     console.log('received doClickInSeconds')
     setTimeout(() => {
         state = 0
         console.log('reset state to 0')
-    }, seconds * 1000);
+    }, seconds * 1000)
 })
 
 {
@@ -126,6 +101,6 @@ function setInfo(newInfo) {
 }
 
 function updateCanvas(state) {
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-    canvasContext.fillRect(state.x * (width / 10), state.y * (height / 10), (width / 10), (height / 10));
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+    canvasContext.fillRect(state.x * (width / 10), state.y * (height / 10), (width / 10), (height / 10))
 }

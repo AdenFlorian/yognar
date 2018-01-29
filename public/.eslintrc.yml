@@ -1,6 +1,10 @@
 env:
-  node : true
+  browser : true
+  node: false
   es6: true
+globals:
+  io: true
+  doStep: true
 extends: 'eslint:recommended'
 rules:
   indent:

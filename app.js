@@ -8,8 +8,8 @@ const doStep = require('./public/doStep.js').doStep
 app.use(bodyParser.json())
 
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*")
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
     next()
 })
 
@@ -33,17 +33,17 @@ io.on('connection', (socket) => {
         socket.emit('doClickInSeconds', 3)
         setTimeout(() => {
             switch (state.direction) {
-                case 'left': state.direction = 'up'
-                    break;
-                case 'right': state.direction = 'down'
-                    break;
-                case 'up': state.direction = 'right'
-                    break;
-                case 'down': state.direction = 'left'
-                    break;
-                default: throw 'bad direction'
+            case 'left': state.direction = 'up'
+                break
+            case 'right': state.direction = 'down'
+                break
+            case 'up': state.direction = 'right'
+                break
+            case 'down': state.direction = 'left'
+                break
+            default: throw 'bad direction'
             }
-        }, 3000);
+        }, 3000)
     })
     sendState(socket)
     setInterval(() => sendState(socket), 1000)
