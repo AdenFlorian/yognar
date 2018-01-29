@@ -29,7 +29,7 @@ io.on('connection', (socket) => {
     })
     socket.on('click', () => {
         console.log('click')
-        socket.emit('doClickInSeconds', .5)
+        socket.emit('doClickInSeconds', .4)
         setTimeout(() => {
             state = common.changeDirection(state)
         }, 500)

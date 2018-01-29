@@ -3,6 +3,10 @@ const socket = io()
 const foregroundColor = 'lime'
 const backgroundColor = 'black'
 
+document.body.style.backgroundColor = backgroundColor
+document.body.style.color = foregroundColor
+document.body.style.textAlign = 'center'
+
 const info = document.getElementById('info')
 const canvas = document.getElementById('canvas')
 const width = 400
@@ -11,9 +15,6 @@ canvas.width = width
 canvas.height = height
 canvas.style.border = '1px solid ' + foregroundColor
 const canvasContext = canvas.getContext('2d')
-
-document.body.style.backgroundColor = backgroundColor
-document.body.style.color = foregroundColor
 
 let state = {...common.initialState}
 let started = false
