@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const http = require('http').Server(app)
 const io = require('socket.io')(http)
-const common = require('./public/doStep.js')
+const common = require('./public/common.js')
 
 app.use(bodyParser.json())
 
@@ -13,14 +13,7 @@ app.use((req, res, next) => {
     next()
 })
 
-const gridSize = 100
-
-let state = {
-    x: gridSize / 2,
-    y: gridSize / 2,
-    direction: 'right',
-    gridSize
-}
+let state = {...common.initialState}
 
 const stepIntervalms = 100
 

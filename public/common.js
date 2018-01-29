@@ -1,4 +1,12 @@
+const gridSize = 100
 const common = {
+    gridSize: gridSize,
+    initialState: {
+        x: gridSize / 2,
+        y: gridSize / 2,
+        direction: 'right',
+        gridSize: gridSize
+    },
     doStep: (state) => {
         let newState = {...state}
         switch (state.direction) {

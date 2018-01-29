@@ -8,24 +8,38 @@ canvas.width = width
 canvas.height = height
 const canvasContext = canvas.getContext('2d')
 
-let state = 0
+const foregroundColor = 'lime'
+const backgroundColor = 'black'
+
+document.body.style.backgroundColor = backgroundColor
+document.body.style.color = foregroundColor
+
+let state = {...common.initialState}
+let started = false
 const stepIntervalms = 100
 
 setInfo('connecting')
 
-socket.on('state', (serverState) => (state = serverState))
-
-setInterval(doStep2, stepIntervalms)
+socket.on('state', (serverState) => {
+    state = serverState
+    if (started === false) {
+        started = true
+        setInterval(doStep2, stepIntervalms)
+    }
+})
 
 function doStep2() {
     state = common.doStep(state)
     updateCanvas(state)
 }
 
-document.onclick = function () {
-    socket.emit('click')
-    console.log('click')
+function updateCanvas(state) {
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
+    canvasContext.fillStyle = foregroundColor
+    canvasContext.fillRect(state.x * (width / state.gridSize), state.y * (height / state.gridSize), (width / state.gridSize), (height / state.gridSize))
 }
+
+document.onclick = () => socket.emit('click')
 
 socket.on('doClickInSeconds', (seconds) => {
     console.log('received doClickInSeconds')
@@ -101,8 +115,3 @@ function setInfo(newInfo) {
     info.textContent = newInfo
 }
 
-function updateCanvas(state) {
-    canvasContext.clearRect(0, 0, canvas.width, canvas.height)
-    canvasContext.fillStyle = 'lime'
-    canvasContext.fillRect(state.x * (width / state.gridSize), state.y * (height / state.gridSize), (width / state.gridSize), (height / state.gridSize))
-}
