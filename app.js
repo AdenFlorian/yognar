@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 let state = {...common.initialState}
 
 const stepIntervalms = 100
+const syncIntervalms = 1000
 
 app.use(express.static('public'))
 
@@ -34,7 +35,7 @@ io.on('connection', (socket) => {
         }, 500)
     })
     sendState(socket)
-    setInterval(() => sendState(socket), stepIntervalms)
+    setInterval(() => sendState(socket), syncIntervalms)
 })
 
 http.listen(80, () => console.log('yognar listening on port 80!'))

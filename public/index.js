@@ -1,15 +1,16 @@
 const socket = io()
 
+const foregroundColor = 'lime'
+const backgroundColor = 'black'
+
 const info = document.getElementById('info')
 const canvas = document.getElementById('canvas')
 const width = 400
 const height = 400
 canvas.width = width
 canvas.height = height
+canvas.style.border = '1px solid ' + foregroundColor
 const canvasContext = canvas.getContext('2d')
-
-const foregroundColor = 'lime'
-const backgroundColor = 'black'
 
 document.body.style.backgroundColor = backgroundColor
 document.body.style.color = foregroundColor

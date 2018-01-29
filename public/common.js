@@ -16,7 +16,7 @@ const common = {
                 break
             case 'up': newState.y++
                 break
-            case 'down': newState.y++
+            case 'down': newState.y--
                 break
             default: throw 'bad direction'
         }
