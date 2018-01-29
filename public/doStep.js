@@ -1,13 +1,13 @@
 const doStep = (state) => {
-    let newState;
+    let newState = {...state}
     switch (state.direction) {
-        case 'right': newState = {...state, x: state.x + 1}
+        case 'right': newState.x++
             break
-        case 'left': newState = {...state, x: state.x - 1}
+        case 'left': newState.x--
             break
-        case 'up': newState = {...state, y: state.y + 1}
+        case 'up': newState.y++
             break
-        case 'down': newState = {...state, y: state.y - 1}
+        case 'down': newState.y++
             break
         default: throw 'bad direction'
     }
@@ -19,5 +19,5 @@ const doStep = (state) => {
 }
 
 if (typeof window === 'undefined') {
-    module.exports.doStep = doStep;
+    module.exports.doStep = doStep
 }

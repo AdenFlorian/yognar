@@ -1,19 +1,6 @@
 env:
   browser : true
-  node: false
   es6: true
 globals:
   io: true
   doStep: true
-extends: 'eslint:recommended'
-rules:
-  indent:
-    - error
-    - 4
-  quotes:
-    - error
-    - single
-  semi:
-    - error
-    - never
-  no-console: off
